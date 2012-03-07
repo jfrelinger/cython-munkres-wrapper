@@ -8,19 +8,6 @@ cimport numpy as np
 # _always_ do that, or you will have segfaults
 np.import_array()
 
-#cdef extern from "<vector>" namespace "std":
-#    cdef cppclass vector[T]:
-#        cppclass iterator:
-#            T operator*()
-#            iterator operator++()
-#            bint operator==(iterator)
-#            bint operator!=(iterator)
-#        vector()
-#        void push_back(T&)
-#        T& operator[](int)
-#        T& at(int)
-#        iterator begin()
-#        iterator end()
 
 from libcpp.vector cimport vector
 from libcpp cimport bool
@@ -32,6 +19,9 @@ cdef extern from "cpp/Munkres.h":
 
    
 def munkres(np.ndarray[np.double_t,ndim=2] A):
+    '''
+    calculate the minimum cost assigment of a cost matrix (must be numpy.double type)
+    '''
     cdef int x = A.shape[0]
     cdef int y = A.shape[1]
     cdef Munkres* munk = new Munkres()

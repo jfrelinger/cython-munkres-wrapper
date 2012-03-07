@@ -1,41 +1,18 @@
-""" Example of building a module with a Cython file. See the distutils
-and numpy distutils documentations for more info:
-http://docs.scipy.org/doc/numpy/reference/distutils.html
-"""
-# Author: Gael Varoquaux
-# License: BSD
-import numpy
+from distutils.core import setup
+from distutils.extension import Extension
 from Cython.Distutils import build_ext
+from numpy import get_include
 
-def configuration(parent_package='', top_path=None):
-    """ Function used to build our configuration.
-"""
-    from numpy.distutils.misc_util import Configuration
-
-    # The configuration object that hold information on all the files
-    # to be built.
-    config = Configuration('', parent_package, top_path)
-    config.add_extension('munkres',
-                         sources=['src/munkres.pyx',
-                                  'src/cpp/Munkres.cpp',
-                                  ],
-                         # libraries=['m'],
-                         language="c++",  
-                         depends=['src/cpp/Munkres.cpp',
-                                  ],
-                         include_dirs=[numpy.get_include(), 'src/cpp/'])
-    return config
-
-
-if __name__ == '__main__':
-    # Retrieve the parameters of our local configuration
-    params = configuration(top_path='').todict()
-
-    # Override the C-extension building so that it knows about '.pyx'
-    # Cython files
-    params['cmdclass'] = dict(build_ext=build_ext)
-
-    # Call the actual building/packaging function (see distutils docs)
-    from numpy.distutils.core import setup
-    setup(**params)
+setup(
+    cmdclass = {'build_ext': build_ext},
+    ext_modules = [Extension("munkres", ["src/munkres.pyx",
+                                         "src/cpp/Munkres.cpp"],
+                             include_dirs = [get_include(), 'src/cpp'],
+                             language='c++')],
+    version = '1.0',
+    description='Python Flow Cytometry (FCM) Tools',
+    author='Jacob Frelinger',
+    author_email='jacob.frelinger@duke.edu',
+    requires=['numpy (>=1.3.0)', 'cython (>=0.15.1)']
+)
 
