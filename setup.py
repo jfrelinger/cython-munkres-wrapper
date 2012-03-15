@@ -10,7 +10,7 @@ setup(
                              include_dirs = [get_include(), 'src/cpp'],
                              language='c++')],
     version = '1.0',
-    description='Munkres implemented in c++ wrapped by cython'
+    description='Munkres implemented in c++ wrapped by cython',
     author='Jacob Frelinger',
     author_email='jacob.frelinger@duke.edu',
     requires=['numpy (>=1.3.0)', 'cython (>=0.15.1)']
