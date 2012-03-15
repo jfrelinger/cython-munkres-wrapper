@@ -4,6 +4,8 @@ from Cython.Distutils import build_ext
 from numpy import get_include
 
 setup(
+    name='munkres',
+    url='https://github.com/jfrelinger/cython-munkres-wrapper',
     cmdclass = {'build_ext': build_ext},
     ext_modules = [Extension("munkres", ["src/munkres.pyx",
                                          "src/cpp/Munkres.cpp"],
