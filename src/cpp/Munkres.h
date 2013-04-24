@@ -10,6 +10,7 @@
 //using namespace std;
 //using std::vector;
 #include <vector>
+#include <algorithm> 
 
 enum path_type { STARRED, PRIMED };
 class path_item {
@@ -34,7 +35,12 @@ private:
 	std::vector<std::vector<bool> > primed;
 	double k;
 	int size;
+	int rows;
+	int cols;
+	int smallest;
+	int largest;
 
+	void step0();
 	void step1();
 	void step2();
 	void step3();

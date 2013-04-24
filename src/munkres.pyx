@@ -4,6 +4,7 @@ import numpy as np
 # Import the C-level symbols of numpy
 cimport numpy as np
 
+cimport cython # to disable bounds checks
 # Numpy must be initialized. When using numpy from C or Cython you must
 # _always_ do that, or you will have segfaults
 np.import_array()
@@ -17,7 +18,7 @@ cdef extern from "cpp/Munkres.h":
         Munkres()
         vector[vector[bool]] solve(vector[vector[double]] x)
 
-   
+@cython.boundscheck(False)
 def munkres(np.ndarray[np.double_t,ndim=2] A):
     '''
     calculate the minimum cost assigment of a cost matrix (must be numpy.double type)

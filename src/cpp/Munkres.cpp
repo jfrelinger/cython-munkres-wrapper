@@ -11,6 +11,7 @@
 #include <math.h>
 #include <limits>
 #include <vector>
+#include <algorithm> 
 
 //using namespace std;
 //using std::vector;
@@ -49,10 +50,21 @@ std::vector<std::vector<bool> > Munkres::solve(std::vector< std::vector<double> 
 		}
 	}
 	size = icost.size();
-
+	rows = size;
+	
+	cols = icost[0].size();
+	smallest = std::min(rows,cols);
+	largest = std::max(rows,cols);
+	
+	if (rows > cols){
+		step0();
+	}
+	else
+	{
 	k = min_uncovered();
 
 	step1();
+	}
 //	for(int i=0;i<icost.size();i++) {
 //		for(int j=0;j<icost[i].size();j++){
 //			std::cout << starred[i][j] << ' ';
@@ -61,6 +73,24 @@ std::vector<std::vector<bool> > Munkres::solve(std::vector< std::vector<double> 
 //	}
 	return starred;
 }
+
+void Munkres::step0() {
+	int minimum;
+	for(int j=0; j<cols;j++) {
+		minimum = cost[0][j];
+		for (int i=0; i<rows;i++) {
+			if (minimum > cost[i][j]) {
+				minimum = cost[i][j];
+			}
+		}
+		for (int i=0; i<rows;i++) {
+			cost[i][j] = cost[i][j] - minimum;
+		}
+	}
+	k = min_uncovered();
+	step2();
+}
+		
 
 void Munkres::step1() {
 	/*
@@ -92,9 +122,9 @@ void Munkres::step2() {
 	 *
 	 * goto step 3
 	 */
-	for(int i=0; i< size; i++)
+	for(int i=0; i< rows; i++)
 	{
-		for(int j=0; j< size; j++)
+		for(int j=0; j< cols; j++)
 		{
 
 			if (cost[i][j] == 0)
@@ -114,9 +144,9 @@ void Munkres::step3() {
 	 * else goto step 4
 	 */
 	int cov_count = 0;
-	for(int i=0; i<size; i++)
+	for(int i=0; i<rows; i++)
 	{
-		for(int j=0; j<size; j++)
+		for(int j=0; j<cols; j++)
 		{
 			if (starred[i][j]==1)
 			{
@@ -125,7 +155,7 @@ void Munkres::step3() {
 			}
 		}
 	}
-	if (cov_count != size)
+	if (cov_count != smallest)
 	{
 		step4();
 	}
@@ -234,18 +264,21 @@ void Munkres::step6(double val) {
 	 * then subtract it from every uncovered column.
 	 * return to step 4
 	 */
-	for (int i=0; i < size; i++)
+	for (int i=0; i < cols; i++)
 	{
 		// fix this....
 		if (!is_covered_col(i))
 		{ // uncovered column
-			for(int j=0;j<cost.size();j++){
+			for(int j=0;j<rows;j++){
 			    cost[j][i]-= val;
 			}
 		}
+	}
+	for (int i=0; i < rows; i++)
+	{
 		if (is_covered_row(i))
 		{
-			for(int j=0;j<cost[i].size();j++){
+			for(int j=0;j<cols;j++){
 			    cost[i][j]+= val;
 			}
 		}
@@ -349,9 +382,9 @@ void Munkres::prime(int row, int col) {
 
 bool Munkres::find_zero(std::vector<std::vector<double> > mat, int* row, int* col) {
 	// find a zero thats uncovered
-	for (int i =0; i< size; i++)
+	for (int i =0; i< rows; i++)
 	{
-		for (int j = 0; j< size; j++)
+		for (int j = 0; j< cols; j++)
 		{
 			if (mat[i][j] == 0)
 			{
@@ -372,9 +405,9 @@ float Munkres::min_uncovered() {
 
 	double min = std::numeric_limits<double>::infinity();
 
-	for (int i =0; i< size; i++)
+	for (int i =0; i< rows; i++)
 	{
-		for (int j = 0; j< size; j++)
+		for (int j = 0; j< cols; j++)
 		{
 			if (!is_covered(i,j))
 			{
