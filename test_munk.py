@@ -46,5 +46,5 @@ def test_big():
     for i in range(256):
         for j in range(256):
             a[i,j] = (i+1)*(j+1)
-    b = munkres(a)
+    b = munkres(a.T)
     print b

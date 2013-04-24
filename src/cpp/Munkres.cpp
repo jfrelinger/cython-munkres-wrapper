@@ -169,8 +169,8 @@ void Munkres::step4() {
 	 * once no uncovered exist goto step 6.
 	 */
 	bool done = false;
+	int i,j;
 	while(!done){
-		int i,j;
 		if (find_zero(cost,&i,&j))
 		{
 			if (!is_covered(i,j))
