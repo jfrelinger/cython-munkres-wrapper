@@ -26,18 +26,22 @@ class Munkres {
 public:
 	Munkres();
 	virtual ~Munkres();
-	void solve(double* icost, double* answer, int m, int n);
+	void solve(double * icost, int* answer, int m, int n);
 private:
-	double *cost;
-	bool *starred;
+	double ** cost;
+	bool ** starred;
+	bool ** primed;
 	bool *covered_rows;
 	bool *covered_cols;
-	bool * primed;
+
 	double k;
 	int rows;
 	int cols;
 	int smallest;
 	int largest;
+
+	int zi;
+	int zj;
 
 
 	void step0();
@@ -58,8 +62,8 @@ private:
 	bool is_covered_col(int);
 	bool is_covered_row(int);
 	void prime(int, int);
-	bool find_zero(std::vector<std::vector<double> >, int*, int*);
-	float min_uncovered();
+	bool find_zero(int*, int*);
+	double min_uncovered();
 	int find_starred_zero_in_col(int);
 	int find_primed_zero_in_row(int);
 
