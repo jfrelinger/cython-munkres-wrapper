@@ -35,11 +35,11 @@ Munkres::~Munkres() {
 	// TODO Auto-generated destructor stub
 }
 
-std::vector<std::vector<bool> > Munkres::solve(std::vector< std::vector<double> > icost) {
+std::vector<std::vector<int> > Munkres::solve(std::vector< std::vector<double> > icost) {
 	for(int i=0;i<icost.size();i++) {
 		cost.push_back(std::vector<double>());
-		starred.push_back(std::vector<bool>());
-		primed.push_back(std::vector<bool>());
+		starred.push_back(std::vector<int>());
+		primed.push_back(std::vector<int>());
 		covered_rows.push_back(0);
 		covered_cols.push_back(0);
 
@@ -287,8 +287,8 @@ void Munkres::step6(double val) {
 }
 
 bool Munkres::is_starred_in_row_col(int row, int col) {
-	std::vector<bool> a = starred[row];
-	std::vector<bool> b;
+	std::vector<int> a = starred[row];
+	std::vector<int> b;
 	for(int r = 0; r < starred.size(); r++){
 		b.push_back(starred[r][col]);
 	}
@@ -308,7 +308,7 @@ bool Munkres::is_starred_in_row_col(int row, int col) {
 
 int Munkres::starred_in_row(int row) {
 	// find a starred value in a row
-	std::vector<bool> a = starred[row];
+	std::vector<int> a = starred[row];
 
 	for(int i=0;i<a.size();i++)
 	{
@@ -429,7 +429,7 @@ int Munkres::find_starred_zero_in_col(int col) {
 	}
 	for (int i = 0; i < size; i++)
 	{
-		if ((starred[i][col] == 1) && (a[i] == 0)) // if it's starrred it should be zero but check just in case....
+		if ((starred[i][col] == 1))// && (a[i] == 0)) // if it's starrred it should be zero but check just in case....
 			return i;
 	}
 	return -1;
@@ -438,9 +438,9 @@ int Munkres::find_starred_zero_in_col(int col) {
 int Munkres::find_primed_zero_in_row(int row) {
 	// given a row, find if it has a primed zero in it, otherwise return -1
 	std::vector<double> a = cost[row];
-	for (int i = 0; i <size; i++)
+	for (int i = 0; i <cols; i++)
 	{
-		if ((primed[row][i] == 1) && (a[i] == 0)) // if it's primed it should be a zero, but check just in case...
+		if ((primed[row][i] == 1))// && (a[i] == 0)) // if it's primed it should be a zero, but check just in case...
 			return i;
 	}
 	return -1;

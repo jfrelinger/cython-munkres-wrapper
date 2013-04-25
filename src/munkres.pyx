@@ -16,7 +16,7 @@ from libcpp cimport bool
 cdef extern from "cpp/Munkres.h":
     cdef cppclass Munkres:
         Munkres()
-        vector[vector[bool]] solve(vector[vector[double]] x)
+        vector[vector[int]] solve(vector[vector[double]] x)
 
 @cython.boundscheck(False)
 def munkres(np.ndarray[np.double_t,ndim=2] A):
@@ -33,8 +33,8 @@ def munkres(np.ndarray[np.double_t,ndim=2] A):
         for j in range(y):
             cost[i].push_back(A[i,j])
         
-    cdef vector[vector[bool]] ans = munk.solve(cost)
-    
+    cdef vector[vector[int]] ans = munk.solve(cost)
+    del munk
     for i in range(x):
         for j in range(y):
             rslt[i,j] = ans[i][j]
@@ -55,8 +55,7 @@ def max_cost_munkres(np.ndarray[np.double_t,ndim=2] A, double max_cost):
         for j in range(x):
             cost[i].push_back(max_cost)
         
-    cdef vector[vector[bool]] ans = munk.solve(cost)
-    
+    cdef vector[vector[int]] ans = munk.solve(cost)
     for i in range(x):
         for j in range(y):
             rslt[i,j] = ans[i][j]

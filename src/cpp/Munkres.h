@@ -26,19 +26,19 @@ class Munkres {
 public:
 	Munkres();
 	virtual ~Munkres();
-	std::vector<std::vector<bool> > solve(std::vector<std::vector<double> > icost);
+	void solve(double* icost, double* answer, int m, int n);
 private:
-	std::vector<std::vector<double> > cost;
-	std::vector<std::vector<bool> > starred;
-	std::vector<bool> covered_rows;
-	std::vector<bool> covered_cols;
-	std::vector<std::vector<bool> > primed;
+	double *cost;
+	bool *starred;
+	bool *covered_rows;
+	bool *covered_cols;
+	bool * primed;
 	double k;
-	int size;
 	int rows;
 	int cols;
 	int smallest;
 	int largest;
+
 
 	void step0();
 	void step1();

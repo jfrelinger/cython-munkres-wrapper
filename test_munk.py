@@ -41,13 +41,13 @@ def test_more_jobs():
                                   'basic 3x4 case failed\na=%s\ntruth=%s\ncost=%s\ntrue_cost=%s' % (str(a), str(truth), str(a[b]), str(a[truth])))
                   
 
-def test_big():
-    a = np.empty((256,256))
-    for i in range(256):
-        for j in range(256):
-            a[i,j] = (i+1)*(j+1)
-    b = munkres(a)
-    print b
+#def test_big():
+#    a = np.empty((100,100))
+#    for i in range(100):
+#        for j in range(100):
+#            a[i,j] = (i+1)*(j+1)
+#    b = munkres(a)
+#    print b
 
 def test_max_cost():
     
