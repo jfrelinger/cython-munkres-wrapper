@@ -40,4 +40,24 @@ def munkres(np.ndarray[np.double_t,ndim=2] A):
             rslt[i,j] = ans[i][j]
     return rslt
 
+@cython.boundscheck(False)
+def max_cost_munkres(np.ndarray[np.double_t,ndim=2] A, double max_cost):
+    cdef int x = A.shape[0]
+    cdef int y = A.shape[1]
+    cdef unsigned int i,j
+    cdef Munkres* munk = new Munkres()
+    cdef np.ndarray rslt = np.zeros([x, y], dtype=np.bool)
+    cdef vector[vector[double]] cost
+    for i in range(x):
+        cost.push_back(vector[double]())
+        for j in range(y):
+            cost[i].push_back(A[i,j])
+        for j in range(x):
+            cost[i].push_back(max_cost)
+        
+    cdef vector[vector[bool]] ans = munk.solve(cost)
     
+    for i in range(x):
+        for j in range(y):
+            rslt[i,j] = ans[i][j]
+    return rslt

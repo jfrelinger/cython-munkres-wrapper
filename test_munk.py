@@ -1,5 +1,5 @@
 import numpy as np
-from munkres import munkres
+from munkres import munkres, max_cost_munkres
 
 def test_simple():
     a = np.array([i for i in range(64)], dtype=np.double).reshape((8, 8))
@@ -46,5 +46,17 @@ def test_big():
     for i in range(256):
         for j in range(256):
             a[i,j] = (i+1)*(j+1)
-    b = munkres(a.T)
+    b = munkres(a)
     print b
+
+def test_max_cost():
+    
+    a = np.array([i for i in range(16)], dtype=np.double).reshape((4,4))
+    b = max_cost_munkres(a,9)
+    print b
+    truth = np.zeros((4, 4), dtype=np.bool)
+    truth[0,1] = True
+    truth[1,0] = True
+    
+    np.testing.assert_array_equal(b, truth, 'basic 3x4 case failed\na=%s\ntruth=%s\ncost=%s\ntrue_cost=%s' % (str(a), str(truth), str(a[b]), str(a[truth])))
+                  

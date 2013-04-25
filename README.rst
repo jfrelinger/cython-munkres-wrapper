@@ -4,6 +4,10 @@ Munkres Readme
 Munkres calculates the minimum cost assignment of the assignment
 using the Hungarian/Munkres algorithm.
 
+Can handle non-square cost matricies, using algorithm
+provded by Bougeois and Lassalle in `An extension of the Munkres
+Algorithm for the Assignment Problem to Rectangular Matrices <http://dl.acm.org/citation.cfm?id=362945>`_.
+
 Usage
 =====
 ::

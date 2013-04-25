@@ -169,14 +169,14 @@ void Munkres::step4() {
 	 * once no uncovered exist goto step 6.
 	 */
 	bool done = false;
-	int i,j;
+	int i,j, a;
 	while(!done){
 		if (find_zero(cost,&i,&j))
 		{
 			if (!is_covered(i,j))
 			{
 				prime(i,j);
-				int a = starred_in_row(i);
+				a = starred_in_row(i);
 				if (a==-1) // if no starred zeros
 				{
 					done = true;
@@ -229,7 +229,7 @@ void Munkres::step5(int i, int j) {
 		}
 	}
 
-	for(int i=0; i < path.size(); i++)
+	for(unsigned int i=0; i < path.size(); i++)
 	{
 		path_item item = path[i];
 		if (item.type==PRIMED) // primed so we star
@@ -242,19 +242,19 @@ void Munkres::step5(int i, int j) {
 		}
 	}
 	// remove all primes
-	for(int i=0; i<primed.size(); i++){
-		for(int j=0;j<primed[i].size(); j++){
+	for(unsigned int i=0; i<primed.size(); i++){
+		for(unsigned int j=0;j<primed[i].size(); j++){
 			primed[i][j] = 0;
 		}
 	}
-	for(int i=0; i<covered_rows.size(); i++){
+	for(unsigned int i=0; i<covered_rows.size(); i++){
 		covered_rows[i] = 0;
 	}
 	// uncover all covered lines
-	for(int i=0; i<covered_rows.size(); i++){
+	for(unsigned int i=0; i<covered_rows.size(); i++){
 		covered_rows[i] = 0;
 	}
-	for(int i=0; i<covered_cols.size(); i++){
+	for(unsigned int i=0; i<covered_cols.size(); i++){
 		covered_cols[i] = 0;
 	}
 	step3();
