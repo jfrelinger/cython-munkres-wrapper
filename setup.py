@@ -10,7 +10,7 @@ setup(
     ext_modules = [Extension("munkres", ["src/munkres.pyx",
                                          "src/cpp/Munkres.cpp"],
                              include_dirs = [get_include(), 'src/cpp'],
-                             language='c++', pyrex_gdb=True, extra_compile_args=['-g'])],
+                             language='c++', pyrex_gdb=True)], #, extra_compile_args=['-g'])],
     version = '1.0',
     description='Munkres implemented in c++ wrapped by cython',
     author='Jacob Frelinger',
