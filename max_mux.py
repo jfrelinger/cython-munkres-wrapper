@@ -6,7 +6,7 @@ def test_big(k):
     for i in range(k):
         for j in range(k):
             a[i,j] = (i+1)*(j+1)
-    b = munkres(a.T)
+    b = munkres(a)
     print k, b
 
 

@@ -10,8 +10,6 @@ cimport cython # to disable bounds checks
 np.import_array()
 
 
-from libcpp.vector cimport vector
-from libcpp cimport bool
 
 cdef extern from "cpp/Munkres.h":
     cdef cppclass Munkres:
@@ -32,23 +30,13 @@ def munkres(np.ndarray[np.double_t,ndim=2, mode="c"] A not None):
     munk.solve(<double *> A.data, <int *> rslt.data, x, y)
     del munk
     return rslt.astype(np.bool)
-#@cython.boundscheck(False)
-#def max_cost_munkres(np.ndarray[np.double_t,ndim=2] A, double max_cost):
-#    cdef int x = A.shape[0]
-#    cdef int y = A.shape[1]
-#    cdef unsigned int i,j
-#    cdef Munkres* munk = new Munkres()
-#    cdef np.ndarray rslt = np.zeros([x, y], dtype=np.bool)
-#    cdef vector[vector[double]] cost
-#    for i in range(x):
-#        cost.push_back(vector[double]())
-#        for j in range(y):
-#            cost[i].push_back(A[i,j])
-#        for j in range(x):
-#            cost[i].push_back(max_cost)
-#        
-#    cdef vector[vector[int]] ans = munk.solve(cost)
-#    for i in range(x):
-#        for j in range(y):
-#            rslt[i,j] = ans[i][j]
-#    return rslt
+
+@cython.boundscheck(False)
+def max_cost_munkres(np.ndarray[np.double_t,ndim=2] A not None, double max_cost):
+    cdef int x = A.shape[0]
+    cdef int y = A.shape[1]
+    
+    cdef np.ndarray[np.double_t, ndim=2, mode="c"] B = np.empty(shape=(2*x, y), dtype=np.double, order='c')
+    B[0:x,:] = A
+    B[x:,:] = max_cost
+    return munkres(B)[0:x,:]
