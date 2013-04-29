@@ -36,7 +36,27 @@ def max_cost_munkres(np.ndarray[np.double_t,ndim=2] A not None, double max_cost)
     cdef int x = A.shape[0]
     cdef int y = A.shape[1]
     
-    cdef np.ndarray[np.double_t, ndim=2, mode="c"] B = np.empty(shape=(2*x, y), dtype=np.double, order='c')
-    B[0:x,:] = A
-    B[x:,:] = max_cost
-    return munkres(B)[0:x,:]
+    cdef np.ndarray[np.double_t, ndim=2, mode="c"] B = np.empty(shape=(x, 2*y), dtype=np.double, order='c')
+    B[:,0:y] = A
+    B[:,y:] = max_cost
+    return munkres(B)[:,0:y]
+
+
+def iterative_munkres(icost, max_cost):
+    cost = icost.copy()
+    dim = np.arange(cost.shape[1])
+    done = False
+    assigned = np.zeros(shape=cost.shape, dtype=np.bool)
+    while not done:
+        remove = []
+        r = max_cost_munkres(cost, max_cost)
+        for i,j in enumerate(r):
+            if np.any(j):
+                assigned[i, dim[j]] = True
+                remove.append(np.arange(cost.shape[1])[j])
+        remove = np.array(remove).squeeze()
+        cost = np.delete(cost, remove, 1)
+        dim = np.delete(dim, remove, 0)
+        if cost.shape[1] == 0:
+            done = True
+    return assigned

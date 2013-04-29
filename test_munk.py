@@ -1,5 +1,6 @@
 import numpy as np
 from munkres import munkres, max_cost_munkres
+from munkres import iterative_munkres
 
 def test_simple():
     a = np.array([i for i in range(64)], dtype=np.double).reshape((8, 8))
@@ -64,5 +65,15 @@ def test_max_cost():
     truth[1,0] = True
     
     np.testing.assert_array_equal(b, truth, 'basic 3x4 case failed\na=%s\ntruth=%s\ncost=%s\ntrue_cost=%s' % (str(a), str(truth), str(a[b]), str(a[truth])))
+
+
+def test_iterative():
+    cost = np.array([[1,1,1,1,1,1],[9,9,9,9,9,9]], dtype=np.double)
+    a = iterative_munkres(cost, 2)
+    truth = np.array([[True, True, True, True, True, True],
+                      [False,False,False,False,False,False]])
+    
+    np.testing.assert_array_equal(a,truth, 'iterative assignment failed')
+
 if __name__ == '__main__':
 	test_basic()
