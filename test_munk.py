@@ -76,4 +76,5 @@ def test_iterative():
     np.testing.assert_array_equal(a,truth, 'iterative assignment failed')
 
 if __name__ == '__main__':
-	test_basic()
+    import nose
+    nose.run()
