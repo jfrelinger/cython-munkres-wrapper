@@ -68,13 +68,16 @@ def test_max_cost():
 
 
 def test_iterative():
-    cost = np.array([[1,1,1,1,1,1],[9,9,9,9,9,9]], dtype=np.double)
+    cost = np.array([[1,1,1,1,1,9],[9,9,9,9,9,9]], dtype=np.double)
     a = iterative_munkres(cost, 2)
-    truth = np.array([[True, True, True, True, True, True],
+    truth = np.array([[True, True, True, True, True, False],
                       [False,False,False,False,False,False]])
     
     np.testing.assert_array_equal(a,truth, 'iterative assignment failed')
-
+#    cost = cost.T
+#    b = iterative_munkres(cost, 2)
+#    np.testing.assert_array_equal(b,truth.T, 'iterative assignment failed')
+#    np.testing.assert_array_equal(a,b.T, 'iterative assignment failed')
 if __name__ == '__main__':
     import nose
     nose.run()

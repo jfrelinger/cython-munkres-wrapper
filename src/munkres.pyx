@@ -9,7 +9,7 @@ cimport cython # to disable bounds checks
 # _always_ do that, or you will have segfaults
 np.import_array()
 
-
+from libcpp cimport bool
 
 cdef extern from "cpp/Munkres.h":
     cdef cppclass Munkres:
@@ -42,17 +42,23 @@ def max_cost_munkres(np.ndarray[np.double_t,ndim=2] A not None, double max_cost)
     return munkres(B)[:,0:y]
 
 @cython.boundscheck(False)
-def iterative_munkres(icost, max_cost):
-    cost = icost.copy()
-    dim = np.arange(cost.shape[1])
-    done = False
-    assigned = np.zeros(shape=cost.shape, dtype=np.bool)
+def iterative_munkres(np.ndarray[np.double_t,ndim=2] icost, max_cost):
+    cdef np.ndarray[np.double_t,ndim=2] cost = icost.copy()
+    cdef int x = cost.shape[0]
+    cdef int y = cost.shape[1]
+    cdef np.ndarray[np.int_t,ndim=1] dim = np.arange(y)
+    cdef bool done = False
+    cdef np.ndarray[np.int_t,ndim=2] assigned = np.zeros(shape=(x,y), dtype=np.int)
+    cdef list remove
     while not done:
+        remove = []
         r = max_cost_munkres(cost, max_cost)
         for i,j in enumerate(r):
             if np.any(j):
                 assigned[i, dim[j]] = True
-                cost[i,dim[j]] = max_cost+1
-        if not np.any(r):
+                remove.append(int(np.arange(cost.shape[1])[j]))
+        cost = np.delete(cost, remove, 1)
+        dim = np.delete(dim, remove, 0)
+        if cost.shape[1] == 0 or not np.any(r):
             done = True
-    return assigned
+    return assigned.astype(np.bool)
