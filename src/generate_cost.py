@@ -72,6 +72,8 @@ if __name__ == '__main__':
     A = stats.DPMixture([cluster1, cluster2])
     B = stats.DPMixture([cluster3, cluster4, cluster5])
     from munkres import munkres
+    print 'Ref has means', A.mus, 'with weights', A.pis
+    print 'Test has means', B.mus, 'with weights', B.pis
     print 'mean distance'
     print mean_distance(A, B)
     print munkres(mean_distance(A, B))
