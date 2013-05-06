@@ -62,3 +62,15 @@ def iterative_munkres(np.ndarray[np.double_t,ndim=2] icost, max_cost):
         if cost.shape[1] == 0 or not np.any(r):
             done = True
     return assigned.astype(np.bool)
+
+@cython.boundscheck(False)
+def _get_cost(np.ndarray[np.int_t, ndim=1] x, np.ndarray[np.int_t, ndim=1] y, np.ndarray[np.double_t, ndim=2] C):
+    cdef int n = x.shape[0]
+    # shut off bounds check
+    cdef int ii = 0
+    cdef int jj = 0
+    for i in range(n):
+        ii = x[i]
+        jj = y[i]
+        C[ii, jj] -= 1.0 
+    return
