@@ -23,4 +23,4 @@ which should print out ::
   [ True False False]
   [False  True False]]
 
-[![Build Status](https://travis-ci.org/jfrelinger/cython-munkres-wrapper.png?branch=master)](https://travis-ci.org/jfrelinger/cython-munkres-wrapper)
+[<img src="https://travis-ci.org/jfrelinger/cython-munkres-wrapper.png?branch=master">](https://travis-ci.org/jfrelinger/cython-munkres-wrapper)
