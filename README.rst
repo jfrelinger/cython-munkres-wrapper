@@ -23,6 +23,6 @@ which should print out ::
   [ True False False]
   [False  True False]]
 
-.. image:: "https://travis-ci.org/jfrelinger/cython-munkres-wrapper.png?branch=master"
+.. image:: https://travis-ci.org/jfrelinger/cython-munkres-wrapper.png?branch=master
    :target: https://travis-ci.org/jfrelinger/cython-munkres-wrapper
 
