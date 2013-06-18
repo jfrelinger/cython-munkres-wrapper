@@ -4,8 +4,9 @@ python:
   - "2.7"
 # command to install dependencies
 before_install:
-  - "sudo apt-get install -qq python-numpy cython"
+  - "sudo apt-get install -qq python-numpy"
 install: 
+  - "pip install cython"
   - "pip install -e ."
 # command to run tests
 script: nosetests
