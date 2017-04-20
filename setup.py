@@ -23,7 +23,7 @@ setup(
     name='munkres',
     url='https://github.com/jfrelinger/cython-munkres-wrapper',
     ext_modules=ext_modules,
-    version='1.0.6',
+    version='1.1.1',
     description='Munkres implemented in c++ wrapped by cython',
     author='Jacob Frelinger',
     author_email='jacob.frelinger@duke.edu',
