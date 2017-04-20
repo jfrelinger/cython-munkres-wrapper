@@ -1,20 +1,34 @@
-from distutils.core import setup
-from distutils.extension import Extension
-from Cython.Distutils import build_ext
-from numpy import get_include
+from setuptools import find_packages, setup, Extension as _Extension
 
+
+class Extension(_Extension, object):
+    def __init__(self, *args, **kwargs):
+        super(Extension, self).__init__(*args, **kwargs)
+
+    @property
+    def include_dirs(self):
+        from numpy import get_include
+        return [get_include(), 'src/cpp']
+
+    @include_dirs.setter
+    def include_dirs(self, _):
+        pass
+
+
+ext_modules = [Extension(
+    'munkres', ['src/munkres.cpp', 'src/cpp/Munkres.cpp'],
+    language='c++'
+)]
 setup(
     name='munkres',
     url='https://github.com/jfrelinger/cython-munkres-wrapper',
-    cmdclass = {'build_ext': build_ext},
-    ext_modules = [Extension("munkres", ["src/munkres.pyx",
-                                         "src/cpp/Munkres.cpp"],
-                             include_dirs = [get_include(), 'src/cpp'],
-                             language='c++', pyrex_gdb=True)], #, extra_compile_args=['-g'])],
-    version = '1.0',
+    ext_modules=ext_modules,
+    version='1.1.1',
     description='Munkres implemented in c++ wrapped by cython',
     author='Jacob Frelinger',
     author_email='jacob.frelinger@duke.edu',
-    requires=['numpy (>=1.3.0)', 'cython (>=0.15.1)']
+    install_requires=['numpy>=1.3.0'],
+    setup_requires=['numpy>=1.3.0'],
+    package_data={'src': ['munkres.cpp', 'cpp/Munkres.cpp', 'cpp/Munkres.h']},
+    packages=find_packages()
 )
-
