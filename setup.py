@@ -2,9 +2,6 @@ from setuptools import find_packages, setup, Extension as _Extension
 
 
 class Extension(_Extension):
-    def __init__(self, *args, **kwargs):
-        super(Extension, self).__init__(*args, **kwargs)
-
     @property
     def include_dirs(self):
         from numpy import get_include
@@ -23,7 +20,7 @@ setup(
     name='munkres',
     url='https://github.com/jfrelinger/cython-munkres-wrapper',
     ext_modules=ext_modules,
-    version='1.0.5',
+    version='1.0.6',
     description='Munkres implemented in c++ wrapped by cython',
     author='Jacob Frelinger',
     author_email='jacob.frelinger@duke.edu',
