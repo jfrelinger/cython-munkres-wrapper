@@ -1,7 +1,10 @@
 from setuptools import find_packages, setup, Extension as _Extension
 
 
-class Extension(_Extension):
+class Extension(_Extension, object):
+    def __init__(self, *args, **kwargs):
+        super(Extension, self).__init__(*args, **kwargs)
+
     @property
     def include_dirs(self):
         from numpy import get_include
